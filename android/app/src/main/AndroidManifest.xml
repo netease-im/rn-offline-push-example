@@ -1,0 +1,183 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
+    <!-- vivo应用配置 Start -->
+    <!-- 这里换成你的 vivo 应用的 appid，以及 appkey -->
+    <meta-data
+      android:name="com.vivo.push.api_key"
+      android:value="YOUR_VIVO_PUSH_API_KEY"/>
+    <meta-data
+      android:name="com.vivo.push.app_id"
+      android:value="YOUR_VIVO_PUSH_APP_ID"/>
+    <!-- vivo应用配置 End -->
+
+    <!-- FCM 应用配置 Start -->
+    <!--设置收到 fcm 通知展示的图标和颜色-->
+    <!-- <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/xxx" />
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/xxx" /> -->
+    <!-- FCM 应用配置 End -->
+
+    <!-- 荣耀应用配置 Start-->
+    <!-- 这里换成你的荣耀推送 appid -->
+    <meta-data
+      android:name="com.hihonor.push.app_id"
+      android:value="YOUR_HONOR_PUSH_APP_ID" />
+    <!-- 荣耀应用配置 End -->
+
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <!-- 小米推送 Start -->
+    <receiver
+            android:exported="true"
+            android:name="com.netease.nimlib.mixpush.mi.MiPushReceiver">
+        <intent-filter android:priority="0x7fffffff">
+            <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
+            <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
+            <action android:name="com.xiaomi.mipush.ERROR"/>
+        </intent-filter>
+    </receiver>
+    <!-- 小米推送 End -->
+
+    <!-- 魅族推送 Start -->
+    <receiver
+      android:exported="true"
+      android:name="com.netease.nimlib.mixpush.mz.MZPushReceiver"
+      android:permission="com.meizu.cloud.push.permission.MESSAGE">
+      <intent-filter android:priority="0x7fffffff">
+        <!-- 接收 push 消息 -->
+        <action android:name="com.meizu.flyme.push.intent.MESSAGE"/>
+        <!-- 接收 register 消息 -->
+        <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK"/>
+        <!-- 接收 unregister 消息 -->
+        <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK"/>
+        <!-- 兼容低版本 Flyme3 推送服务配置 -->
+        <action android:name="com.meizu.c2dm.intent.REGISTRATION"/>
+        <action android:name="com.meizu.c2dm.intent.RECEIVE"/>
+        
+        <category android:name="${applicationId}"/>
+      </intent-filter>
+    </receiver>
+    <!-- 魅族推送 End -->
+
+    <!-- vivo推送 Start -->
+    <receiver
+      android:exported="true"
+      android:name="com.netease.nimlib.mixpush.vivo.VivoPushReceiver">
+      <intent-filter>
+        
+        <!-- 接收 push 消息 -->
+        <action android:name="com.vivo.pushclient.action.RECEIVE"/>
+      </intent-filter>
+    </receiver>
+    <service
+      android:exported="true"
+      android:name="com.vivo.push.sdk.service.CommandClientService"
+      android:permission="com.push.permission.UPSTAGESERVICE"/>
+    <!-- vivo推送 End -->
+
+    <!-- oppo推送 Start -->
+    <!--Oppo推送配置项 需要配置以下两项-->
+    <!-- 兼容Q以下版本 继承CompatibleDataMessageCallbackService-->
+    <service
+        android:exported="true"
+        android:name="com.netease.nimlib.mixpush.oppo.OppoPushService"
+        android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
+      <intent-filter>
+        <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
+      </intent-filter>
+    </service>
+        <!-- 兼容Q版本 继承DataMessageCallbackService-->
+    <service
+      android:exported="true"
+      android:name="com.netease.nimlib.mixpush.oppo.OppoAppPushService"
+      android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
+      <intent-filter>
+        <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
+        <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE"/>
+      </intent-filter>
+    </service>
+
+      <service
+      android:exported="true"
+      android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"
+      android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
+      <intent-filter>
+        <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
+      </intent-filter>
+      </service>
+
+      <service
+      android:exported="true"
+      android:name="com.heytap.msp.push.service.DataMessageCallbackService"
+      android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
+      <intent-filter>
+        <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
+        <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE"/>
+      </intent-filter>
+      </service>
+    <!-- oppo推送 End -->
+
+    <!-- FCM推送 Start -->
+    <service
+      android:exported="false"
+      android:name="com.netease.nimlib.mixpush.fcm.FCMTokenService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+    <!-- FCM推送 End -->
+
+    <!-- 华为推送 Start -->
+    <service
+      android:exported="false"
+      android:name="com.netease.nimlib.mixpush.hw.HWPushService">
+      <intent-filter>
+        <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+    <!-- 华为推送 End -->
+
+    <!-- 荣耀推送 Start -->
+     <service
+      android:exported="false"
+      android:name="com.netease.nimlib.mixpush.honor.HonorPushService">
+      <intent-filter>
+        <action android:name="com.hihonor.push.action.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+    <!-- 荣耀推送 End -->
+
+  </application>
+ 
+  <!-- 魅族推送配置 Start -->
+  <!-- 兼容 Flyme5 的权限配置-->
+  <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"/>
+  <permission
+          android:name="${applicationId}.push.permission.MESSAGE"
+          android:protectionLevel="signature"/>
+  <uses-permission android:name="{applicationId}.push.permission.MESSAGE"/>
+
+  <!-- 兼容 Flyme3 的权限配置-->
+  <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE"/>
+  <permission
+          android:name="${applicationId}.permission.C2D_MESSAGE"
+          android:protectionLevel="signature"/>
+  <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE"/>
+  <!-- 魅族推送配置 End -->
+
+  <!--  oppo推送配置 Start-->
+  <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+  <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+  <!--  oppo推送配置 End -->
+</manifest>
